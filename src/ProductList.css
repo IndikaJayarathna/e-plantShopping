@@ -107,7 +107,17 @@ body {
     margin-top: 10px;
 }
 
-.product-button:hover {
+.product-button[disabled] {
+    background-color: grey;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+.product-button:not([disabled]):hover {
     background-color: #c0392b;
 }
 
@@ -197,7 +207,7 @@ body {
 }
 /* ProductList.css */
 
-.product-button {
+.product-button:not([disabled]) {
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
@@ -211,7 +221,7 @@ body {
     cursor: pointer;
   }
   
-  .product-button:hover {
+  .product-button:not([disabled]):hover {
     background-color: #45a049;
   }
   

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './ProductList.css';
 import CartItem from './CartItem';
-import { addItem, selectorCartTotal } from './CartSlice';
+import { addItem, getAllItems, selectorCartTotal } from './CartSlice';
 
 
 function ProductList() {
@@ -11,10 +11,11 @@ function ProductList() {
 
     const [showCart, setShowCart] = useState(false); 
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
-    const [addedToCart, setAddedToCart] = useState({});
 
     // total number of items in the cart
     const totalItems = useSelector(selectorCartTotal);
+    
+    const addedToCart = useSelector(getAllItems);
 
     const plantsArray = [
         {
@@ -246,24 +247,21 @@ function ProductList() {
    const handleCartClick = (e) => {
     e.preventDefault();
     setShowCart(true); // Set showCart to true when cart icon is clicked
-};
-const handlePlantsClick = (e) => {
-    e.preventDefault();
-    setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
-    setShowCart(false); // Hide the cart when navigating to About Us
-};
+    };
 
-   const handleContinueShopping = (e) => {
-    e.preventDefault();
-    setShowCart(false);
-  };
+    const handlePlantsClick = (e) => {
+        e.preventDefault();
+        setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
+        setShowCart(false); // Hide the cart when navigating to About Us
+    };
+
+    const handleContinueShopping = (e) => {
+        e.preventDefault();
+        setShowCart(false);
+    };
 
     const handleAddToCart = (product) => {
         dispatch(addItem(product));
-        setAddedToCart((prevState) => ({
-            ...prevState,
-            [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
-        }));
     };
 
     return (
@@ -304,7 +302,12 @@ const handlePlantsClick = (e) => {
                             <div className="product-title"> {plant.name} </div>
                             <div className="product-description"> {plant.description} </div>
                             <div className="product-price"> {plant.cost} </div>
-                            <button className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+
+                            {
+                                addedToCart.includes(plant.name) ? 
+                                <button className="product-button" disabled>Added to Cart</button> : 
+                                <button className="product-button" onClick={() => handleAddToCart(plant)} >Add to Cart</button>
+                            }
                         </div>
                     ))}
                 </div>
